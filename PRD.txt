@@ -1,4 +1,4 @@
 1.5 Overview 
 
-The project being implemented is a balanced binary search tree. A binary tree is a tree data structure. Each of its nodes has a maximum of two “children”, also referred to as the left and right children. Each “child” is another node. A self-balancing search tree automatically tries to keep its height, the number of levels of nodes underneath the root, minimal by performing transformations at relevant times.
+        The project being implemented is a balanced binary search tree. A binary tree is a tree data structure. Each of its nodes has a maximum of two “children”, also referred to as the left and right children. Each “child” is another node. A self-balancing search tree automatically tries to keep its height, the number of levels of nodes underneath the root, minimal by performing transformations at relevant times.
         These binary trees can be used for constructing and maintaining ordered lists, associative arrays, and key-value pairs. They can be altered to record additional data and perform other operations, which can help optimize database queries and different algorithms.
