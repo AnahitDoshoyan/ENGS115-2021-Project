@@ -14,45 +14,6 @@ void BinaryTree(), AddNode(char, char*);
 void DeleteNode(NODE *);
 int ReadString(char *);
 
-int main()
-{
-	char Option, *token, *Input, ch, Temp[2];
-	char InputString[256], EnglishMessage[256]="";
-	char MorseString[256]="";
-
-	BinaryTree();
-	while(1){
-		printf("Insert coded message; ");
-		ReadString(InputString);
-		strcpy(MorseString, InputString);
-		Input = MorseString;
-		token = strtok(InputString, " #");
-		while(token !=NULL){
-			ch = GetChar(token);
-			sprintf(Temp, "%c" , ch);
-			strcat(EnglishMessage, Temp);
-			Input = Input + strlen(token);
-			if(*Input == ' ')
-				Input ++;
-			if(*Input == ' '){
-				strcat(EnglishMessage, "");
-				Input ++;
-			}
-			token = strtok(NULL, "");
-		}
-		printf("Morse coded message is: ");
-		printf("%s\n", MorseString);
-		printf("Message in English is: ");
-		printf("%s\n", EnglishMessage);
-		printf("Continue(y/n)?:");
-		Option = getchar();
-		if((Option == 'N')||(Option == 'n'))
-			break;
-		EnglishMessage[0] = '\0';
-	}
-	DeleteNode(Root);
-}
-
 void BinaryTree()
 {
 	int i;
@@ -106,7 +67,7 @@ NODE *CreateNode()
 	return ptr;
 }
 
-char GetChar(char *str)
+char GetChar(char *str) //tanslate function
 {
 	Current = Root;
 	if(strlen(str)==0)
@@ -149,4 +110,61 @@ int ReadString(char *p)
 	while(p[i - 1] != '\n');
 	p[i-1]= '\0';
 	return --len;
+}
+
+void ReadMorseMessage()
+{
+	
+	char *token, *Input, ch, Temp[2];
+	char InputString[256], EnglishMessage[256]="";
+	char MorseString[256]="";
+
+	printf("Insert coded message; ");
+	ReadString(InputString);
+	strcpy(MorseString, InputString);
+	Input = MorseString;
+	token = strtok(InputString, " #");
+	while(token !=NULL){
+		ch = GetChar(token);
+		sprintf(Temp, "%c" , ch);
+		strcat(EnglishMessage, Temp);
+		Input = Input + strlen(token);
+		if(*Input == ' ')
+			Input ++;
+		if(*Input == ' '){
+			strcat(EnglishMessage, " ");
+			Input ++;
+		}
+		token = strtok(NULL, " #");
+	}
+	printf("Morse coded message is: ");
+	printf("%s\n", MorseString);
+	printf("Message in English is: ");
+	printf("%s\n", EnglishMessage);
+	memset(InputString, 0, strlen(InputString) + 1 );
+	memset(MorseString, 0, strlen(MorseString) + 1 );
+	memset(EnglishMessage, 0, strlen(EnglishMessage) + 1 );
+	//EnglishMessage[0] = '\0';
+}
+
+int main()
+{	
+	char Option = 0;
+	BinaryTree();
+	while(1){
+		ReadMorseMessage();
+		printf("Continue(y/n)?:");
+		scanf("%c", &Option);
+		if((Option == 'Y')||(Option == 'y')) 
+			continue;
+		if((Option == 'N')||(Option == 'n'))
+			break;
+		else
+		{
+			printf("Sorry input not recognized\n");
+			break;
+
+		}
+	}
+	DeleteNode(Root);
 }
