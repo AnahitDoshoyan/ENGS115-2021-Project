@@ -74,11 +74,15 @@ char GetChar(char *str) //tanslate function
 		return ' ';
 	char *ptr = str;
 	while(*ptr){
-		if(*ptr =='.')
+		if(*ptr =='.'){
 			Current = Current->LeftTree;
-		if(*ptr == '-')
+			ptr++;
+		}else if(*ptr == '-'){
 			Current = Current->RightTree;
-		ptr++;
+			ptr++;
+		}else{
+			return 0;
+		}
 	}
 	return Current->DataChar;
 }
@@ -101,31 +105,49 @@ void DeleteNode(NODE *ptr)
 
 int ReadString(char *p)
 {
-	int i = 0, len = 0;
-	do{
-		p[i] = getchar();
-		len++;
-		i++;
+	int i = 0;
+	char c = 0;
+	while(1){
+		c = getchar();
+		if(c == '\n'){
+			p[i] = '\0';
+			break;
+		}
+		else{
+			p[i] = c;
+			i++;
+		}
 	}
-	while(p[i - 1] != '\n');
-	p[i-1]= '\0';
-	return --len;
+	return i;
+}
+
+void Clear()
+{
+int c = 0;
+while ((c = getchar()) != '\n' && c != EOF);
+
 }
 
 void ReadMorseMessage()
 {
 	
 	char *token, *Input, ch, Temp[2];
-	char InputString[256], EnglishMessage[256]="";
-	char MorseString[256]="";
+	char InputString[256], EnglishMessage[256];
+	char MorseString[256];
 
-	printf("Insert coded message; ");
+	memset(InputString, 0, 256);
+	memset(MorseString, 0, 256);
+	memset(EnglishMessage, 0, 256);  
+	printf("Insert the coded message: ");
+
 	ReadString(InputString);
+//	printf("User message is: '%s'\n ", InputString);
 	strcpy(MorseString, InputString);
 	Input = MorseString;
 	token = strtok(InputString, " #");
 	while(token !=NULL){
 		ch = GetChar(token);
+//		if(ch == 56 || ch == 55){ 
 		sprintf(Temp, "%c" , ch);
 		strcat(EnglishMessage, Temp);
 		Input = Input + strlen(token);
@@ -134,16 +156,15 @@ void ReadMorseMessage()
 		if(*Input == ' '){
 			strcat(EnglishMessage, " ");
 			Input ++;
-		}
+//		}
 		token = strtok(NULL, " #");
 	}
+}
 	printf("Morse coded message is: ");
 	printf("%s\n", MorseString);
 	printf("Message in English is: ");
 	printf("%s\n", EnglishMessage);
-	memset(InputString, 0, strlen(InputString) + 1 );
-	memset(MorseString, 0, strlen(MorseString) + 1 );
-	memset(EnglishMessage, 0, strlen(EnglishMessage) + 1 );
+	Clear();
 	//EnglishMessage[0] = '\0';
 }
 
@@ -155,10 +176,13 @@ int main()
 		ReadMorseMessage();
 		printf("Continue(y/n)?:");
 		scanf("%c", &Option);
-		if((Option == 'Y')||(Option == 'y')) 
+		if((Option == 'Y')||(Option == 'y')){ 
+		//	ReadMorseMessage();
 			continue;
-		if((Option == 'N')||(Option == 'n'))
+		}
+		else if((Option == 'N')||(Option == 'n')){
 			break;
+		}
 		else
 		{
 			printf("Sorry input not recognized\n");
