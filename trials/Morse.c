@@ -8,7 +8,7 @@ typedef struct Node{
 }NODE;
 
 char *DataTable[26], GetChar(char*);
-NODE *Root, *Current, *Temo, *CreateNode();
+NODE *Root, *Current, *Temp, *CreateNode();
 
 void BinaryTree(), AddNode(char, char*);
 void DeleteNode(NODE *);
@@ -20,7 +20,7 @@ void BinaryTree()
 	DataTable[0] = ".-"; DataTable[1] = "-...";
 	DataTable[2] = "-.-."; DataTable[3] = "-..";
 	DataTable[4] = "."; DataTable[5] = "..-.";
-	DataTable[6] = "--"; DataTable[7] = "....";
+	DataTable[6] = "--."; DataTable[7] = "....";
 	DataTable[8] = ".."; DataTable[9] = ".---";
 	DataTable[10] = "-.-"; DataTable[11] = ".-..";
 	DataTable[12] = "--"; DataTable[13] = "-.";
@@ -29,8 +29,9 @@ void BinaryTree()
 	DataTable[18] = "..."; DataTable[19] = "-";
 	DataTable[20] = "..-"; DataTable[21] = "...-";
 	DataTable[22] = ".--"; DataTable[23] = "-..-";
-	DataTable[24] = "-.--"; DataTable[23] = "--..";
-	DataTable[0] = ".-"; DataTable[25] = "-...";
+	DataTable[24] = "-.--"; DataTable[25] = "--..";
+	
+
 	
 	Root = CreateNode();
 	for(i=0; i<26; i++){
@@ -131,9 +132,13 @@ while ((c = getchar()) != '\n' && c != EOF);
 void ReadMorseMessage()
 {
 	
-	char *token, *Input, ch, Temp[2];
+	char *token = NULL;
+	char *Input = NULL;
+	char ch = '\0';
+	char Temp[2];
 	char InputString[256], EnglishMessage[256];
 	char MorseString[256];
+	char error = 0;
 
 	memset(InputString, 0, 256);
 	memset(MorseString, 0, 256);
@@ -147,8 +152,13 @@ void ReadMorseMessage()
 	token = strtok(InputString, " #");
 	while(token !=NULL){
 		ch = GetChar(token);
-//		if(ch == 56 || ch == 55){ 
 		sprintf(Temp, "%c" , ch);
+//		printf("Translated '%c'\n", ch);
+		if(ch == '\0') {
+			error = 1;
+			printf("The input is invalid\n");
+			break;
+		}
 		strcat(EnglishMessage, Temp);
 		Input = Input + strlen(token);
 		if(*Input == ' ')
@@ -156,16 +166,15 @@ void ReadMorseMessage()
 		if(*Input == ' '){
 			strcat(EnglishMessage, " ");
 			Input ++;
-//		}
+		}
 		token = strtok(NULL, " #");
 	}
-}
-	printf("Morse coded message is: ");
-	printf("%s\n", MorseString);
-	printf("Message in English is: ");
-	printf("%s\n", EnglishMessage);
-	Clear();
-	//EnglishMessage[0] = '\0';
+
+	if (error == 0){
+		printf("Morse coded message is: %s\n", MorseString);
+		printf("Message in English is: %s\n", EnglishMessage);
+	}
+	
 }
 
 int main()
@@ -176,8 +185,8 @@ int main()
 		ReadMorseMessage();
 		printf("Continue(y/n)?:");
 		scanf("%c", &Option);
+		Clear();
 		if((Option == 'Y')||(Option == 'y')){ 
-		//	ReadMorseMessage();
 			continue;
 		}
 		else if((Option == 'N')||(Option == 'n')){
